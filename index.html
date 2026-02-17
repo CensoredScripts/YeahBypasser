@@ -3,86 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yeah Bypasser</title>
+    <title>Year's Bypasser | Roblox Bypass Suite</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
         :root {
-            --bg: #000000;
-            --card: #0a0a0a;
-            --border: #222222;
+            --bg: #050505;
+            --card-bg: #0f0f0f;
+            --border: #2a2a2a;
             --accent: #ffffff;
-            --text: #ffffff;
-            --text-dim: #888888;
+            --accent-dim: #444444;
+            --text: #e0e0e0;
+            --text-muted: #888888;
+            --success: #32d74b;
         }
 
         body {
             background-color: var(--bg);
             color: var(--text);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             min-height: 100vh;
             margin: 0;
-            padding: 20px;
+            padding: 40px 20px;
         }
 
         .container {
-            background: var(--card);
+            background: var(--card-bg);
             padding: 40px;
             border: 1px solid var(--border);
+            border-radius: 12px;
             width: 100%;
-            max-width: 700px;
+            max-width: 720px;
             text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            margin-bottom: 40px;
         }
 
         h1 {
-            font-size: 2rem;
+            font-size: 2.2rem;
             margin: 0;
-            font-weight: 800;
+            font-weight: 900;
             text-transform: uppercase;
             letter-spacing: -1px;
+            background: linear-gradient(180deg, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .subtitle {
-            color: var(--text-dim);
-            font-size: 0.8rem;
-            margin-bottom: 30px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            margin-bottom: 35px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            font-weight: 600;
         }
 
+        /* --- Tabs --- */
         .tabs {
             display: flex;
             border-bottom: 1px solid var(--border);
-            margin-bottom: 25px;
+            margin-bottom: 30px;
+            gap: 5px;
         }
 
         .tab-btn {
             flex: 1;
-            background: none;
+            background: transparent;
             border: none;
-            color: var(--text-dim);
+            border-bottom: 2px solid transparent;
+            color: var(--text-muted);
             padding: 15px;
             cursor: pointer;
             font-weight: 600;
             font-size: 0.9rem;
             text-transform: uppercase;
-            transition: 0.2s;
+            transition: all 0.3s ease;
         }
 
+        .tab-btn:hover { color: var(--text); background: rgba(255,255,255,0.02); }
         .tab-btn.active {
             color: var(--accent);
             border-bottom: 2px solid var(--accent);
+            background: linear-gradient(180deg, transparent, rgba(255,255,255,0.03));
         }
 
-        .section-content { display: none; }
+        .section-content { display: none; animation: fadeIn 0.3s ease; }
         .section-content.active { display: block; }
 
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- Controls --- */
         .label {
             font-size: 0.7rem;
-            color: var(--text-dim);
+            color: var(--text-muted);
             text-transform: uppercase;
             margin-bottom: 12px;
             display: block;
@@ -93,16 +110,17 @@
         .controls, .sub-controls {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 10px;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .btn {
-            background: transparent;
+            background: rgba(255,255,255,0.03);
             border: 1px solid var(--border);
-            color: var(--text-dim);
-            padding: 8px 16px;
+            color: var(--text-muted);
+            padding: 10px 18px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 0.8rem;
             font-weight: 600;
@@ -110,60 +128,86 @@
             transition: 0.2s;
         }
 
-        .btn:hover { border-color: #444; color: #fff; }
-        .btn.active { border-color: var(--accent); color: var(--accent); }
+        .btn:hover { border-color: #666; color: #fff; transform: translateY(-1px); }
+        .btn.active { 
+            background: var(--accent); 
+            color: #000; 
+            border-color: var(--accent); 
+            box-shadow: 0 4px 12px rgba(255,255,255,0.15);
+        }
 
+        /* --- Specific Areas --- */
         .bait-section {
-            margin-top: 15px;
-            padding-top: 15px;
+            margin-top: 20px;
+            padding-top: 20px;
             border-top: 1px solid var(--border);
             display: none;
         }
 
+        .coming-soon-box {
+            padding: 40px;
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.01);
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .highlight-text { color: var(--accent); font-weight: bold; font-style: normal; display: block; margin-top: 8px; }
+
         .upload-row {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             justify-content: center;
-            margin-top: 20px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
         }
 
         .main-btn {
             background: var(--accent);
             color: #000;
-            padding: 12px 24px;
-            font-weight: 700;
+            padding: 12px 28px;
+            font-weight: 800;
             border: none;
+            border-radius: 6px;
             cursor: pointer;
             text-transform: uppercase;
             font-size: 0.9rem;
+            transition: 0.2s;
         }
+        .main-btn:hover { transform: scale(1.02); box-shadow: 0 0 15px rgba(255,255,255,0.3); }
 
         .secondary-btn {
             background: transparent;
             color: #fff;
             border: 1px solid var(--border);
             padding: 12px 24px;
+            border-radius: 6px;
             font-weight: 700;
             cursor: pointer;
             text-transform: uppercase;
             font-size: 0.9rem;
+            transition: 0.2s;
         }
+        .secondary-btn:hover { border-color: #fff; }
 
+        /* --- Preview & Canvas --- */
         #filename-tag {
             font-size: 0.75rem;
-            color: var(--text-dim);
-            margin-bottom: 8px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
             font-family: monospace;
             display: block;
         }
 
-        #preview-area {
-            background: #050505;
+        #preview-area, #joseph-preview-area {
+            background: repeating-conic-gradient(#111 0% 25%, #151515 0% 50%) 50% / 20px 20px;
             padding: 20px;
-            border: 1px solid #333; /* Grey border */
+            border: 1px solid var(--border);
+            border-radius: 8px;
             margin-top: 25px;
             display: none;
-            max-height: 500px; /* Scaling fix */
             overflow: auto;
         }
 
@@ -172,46 +216,130 @@
             height: auto; 
             display: block; 
             margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         #bulk-grid {
             display: none;
             grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 10px;
+            gap: 12px;
             margin-top: 25px;
             padding: 15px;
             border: 1px solid var(--border);
+            border-radius: 8px;
             max-height: 400px;
             overflow-y: auto;
         }
 
-        .bulk-item { border: 1px solid #222; }
+        .bulk-item { border: 1px solid #333; background: #000; padding: 5px; }
 
         .action-wrapper { width: 100%; margin-top: 20px; display: none; flex-direction: column; gap: 10px; }
 
         .export-btn {
-            background: #fff;
-            color: #000;
-            border: none;
+            background: #222;
+            color: #fff;
+            border: 1px solid #444;
             padding: 18px;
+            border-radius: 6px;
             font-weight: 800;
             font-size: 1rem;
             cursor: pointer;
             text-transform: uppercase;
+            transition: 0.2s;
+        }
+        .export-btn:hover { background: #fff; color: #000; border-color: #fff; }
+
+        /* --- Extra Sections --- */
+        .section-divider {
+            width: 100%;
+            max-width: 720px;
+            border: 0;
+            border-top: 1px solid var(--border);
+            margin: 50px 0;
+            opacity: 0.5;
         }
 
-        footer { margin-top: 30px; color: #444; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+        .extra-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 720px;
+            padding: 35px;
+            text-align: center;
+            box-sizing: border-box;
+            margin-bottom: 25px;
+        }
+
+        .extra-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        .method-card {
+            background: #050505;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 25px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .discord-plug {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            font-family: monospace;
+            background: rgba(88, 101, 242, 0.1);
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        
+        .discord-link { color: #5865F2; text-decoration: none; font-weight: bold; }
+
+        /* --- Audio Lab --- */
+        .audio-grid { display: flex; flex-direction: column; gap: 25px; margin-top: 15px; }
+        .audio-input-group { border-bottom: 1px solid #1a1a1a; padding-bottom: 20px; }
+        .val-display { color: var(--accent); float: right; font-family: monospace; font-size: 0.9rem; }
+        
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: #333;
+            border-radius: 3px;
+            outline: none;
+            margin-top: 10px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+        footer { margin-top: 30px; color: #444; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Yeah Bypasser</h1>
-    <div class="subtitle">Greatly Inspired by Top Bypassing</div>
+    <h1>Year's Bypasser</h1>
+    <div class="subtitle">Roblox Bypass Suite</div>
 
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('decals')">Decals</button>
         <button class="tab-btn" onclick="switchTab('shirts')">Shirts</button>
+        <button class="tab-btn" onclick="switchTab('models')">Models</button>
     </div>
 
     <div id="decals-section" class="section-content active">
@@ -238,13 +366,22 @@
     </div>
 
     <div id="shirts-section" class="section-content">
-        <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 25px;">Cleared whites.</p>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 25px;">
+            Optimized for Shirt Templates (Clears Whites).
+        </p>
     </div>
 
-    <div class="upload-row">
+    <div id="models-section" class="section-content">
+        <div class="coming-soon-box">
+            Coming Soon!
+            <span class="highlight-text">( This will be the best option yet! )</span>
+        </div>
+    </div>
+
+    <div class="upload-row" id="main-upload-controls">
         <label for="upload" class="main-btn">Upload Image</label>
         <button id="bulkToggle" class="secondary-btn" onclick="activateBulk()">Bulk Mode</button>
-        <button id="bulkDeactivate" class="secondary-btn" style="display:none; color: #ff4444;" onclick="deactivateBulk()">Disable Bulk</button>
+        <button id="bulkDeactivate" class="secondary-btn" style="display:none; color: #ff5555; border-color: #ff5555;" onclick="deactivateBulk()">Disable Bulk</button>
         <input type="file" id="upload" accept="image/*" style="display:none">
     </div>
     
@@ -261,9 +398,74 @@
     </div>
 </div>
 
-<footer>Note: Real Life images may not work as well, atleast in Decals.</footer>
+<hr class="section-divider">
+
+<div class="extra-section">
+    <div class="extra-title">Top Bypassers Methods</div>
+    <div class="subtitle">BNW Method</div>
+    <div class="discord-plug">
+        JosephLB method | <a href="https://discord.gg/shuXsSBBs4" target="_blank" class="discord-link">discord.gg/shuXsSBBs4</a>
+    </div>
+
+    <div class="method-card">
+        <label for="joseph-upload" class="secondary-btn" style="width:100%; box-sizing:border-box; display:block; text-align:center;">Select Image & Process JosephLB</label>
+        <input type="file" id="joseph-upload" accept="image/*" style="display:none">
+
+        <div id="joseph-preview-area">
+            <canvas id="joseph-canvas"></canvas>
+            <button id="joseph-export" class="export-btn" style="margin-top:15px; width:100%; font-size:0.8rem;">Download Result</button>
+        </div>
+    </div>
+</div>
+
+<div class="extra-section">
+    <div class="extra-title">Audio Bypass</div>
+    <div class="subtitle">Stitch Tags & Master Distortion</div>
+    
+    <div class="method-card">
+        <div class="audio-grid">
+            <div class="audio-input-group">
+                <span class="label">1. Upload Tag (Plays First)</span>
+                <input type="file" id="tag-upload" accept="audio/*">
+                <div class="controls" style="margin-top:10px; flex-direction:column; align-items:flex-start; gap:0;">
+                    <span class="label" style="width:100%; display:flex; justify-content:space-between;">Tag Vol <span class="val-display" id="tag-vol-val">100%</span></span>
+                    <input type="range" id="tag-vol-slider" min="0" max="1" step="0.01" value="1">
+                    
+                    <span class="label" style="width:100%; display:flex; justify-content:space-between; margin-top:15px;">Tag Loudness <span class="val-display" id="tag-gain-val">1x</span></span>
+                    <input type="range" id="tag-gain-slider" min="1" max="50" step="1" value="1">
+                </div>
+            </div>
+
+            <div class="audio-input-group" style="border:none;">
+                <span class="label">2. Main Music</span>
+                <input type="file" id="main-audio-upload" accept="audio/*">
+                <div class="controls" style="margin-top:10px; flex-direction:column; align-items:flex-start; gap:0;">
+                    <span class="label" style="width:100%; display:flex; justify-content:space-between;">Master Loudness <span class="val-display" id="main-gain-val">1x</span></span>
+                    <input type="range" id="main-gain-slider" min="1" max="100" step="1" value="1">
+                    
+                    <span class="label" style="width:100%; display:flex; justify-content:space-between; margin-top:15px;">Saturation <span class="val-display" id="main-dist-val">0%</span></span>
+                    <input type="range" id="main-dist-slider" min="0" max="100" value="0">
+                </div>
+            </div>
+
+            <button class="export-btn" id="audio-process-btn">Stitch & Download WAV</button>
+        </div>
+    </div>
+</div>
+
+<footer>Note: Real Life images may not work as well, at least in Decals.</footer>
 
 <script>
+    // --- UI SLIDER SYNC ---
+    const updateLabel = (id, suffix = '') => {
+        const s = document.getElementById(id + '-slider');
+        const l = document.getElementById(id + '-val');
+        s.oninput = () => { l.innerText = (id.includes('vol') ? Math.round(s.value*100) : s.value) + suffix; };
+    };
+    updateLabel('tag-vol', '%'); updateLabel('tag-gain', 'x'); 
+    updateLabel('main-gain', 'x'); updateLabel('main-dist', '%');
+
+    // --- MAIN DECAL SCRIPT ---
     const upload = document.getElementById('upload');
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
@@ -277,24 +479,30 @@
     const bulkToggle = document.getElementById('bulkToggle');
     const stretchOptions = document.getElementById('stretch-options');
     const baitUi = document.getElementById('bait-ui');
+    const mainUploadControls = document.getElementById('main-upload-controls');
     
-    let activeTab = 'decals';
-    let currentMode = 'stretchWide';
-    let conversionMode = 'none';
-    let currentBait = 'none';
-    let isBulk = false;
-    let imageQueue = [];
-
-    const duckImg = new Image();
-    duckImg.crossOrigin = "anonymous";
-    duckImg.src = "https://files.catbox.moe/x0zpmq.png";
+    let activeTab = 'decals', currentMode = 'stretchWide', conversionMode = 'none', currentBait = 'none', isBulk = false, imageQueue = [];
+    const duckImg = new Image(); duckImg.crossOrigin = "anonymous"; duckImg.src = "https://files.catbox.moe/x0zpmq.png";
 
     function updateVisibility() {
         if (activeTab === 'shirts') {
             baitUi.style.display = 'none';
-        } else {
-            const hasFilter = currentMode.includes('Only') || conversionMode !== 'none';
-            baitUi.style.display = hasFilter ? 'block' : 'none';
+            stretchOptions.style.display = 'none'; // Hide stretch options for shirts
+            mainUploadControls.style.display = 'flex';
+        } 
+        else if (activeTab === 'models') {
+            baitUi.style.display = 'none';
+            stretchOptions.style.display = 'none';
+            mainUploadControls.style.display = 'none'; // Hide upload for coming soon
+            actionWrapper.style.display = 'none';
+            previewArea.style.display = 'none';
+        }
+        else {
+            // Decals
+            baitUi.style.display = (currentMode.includes('Only') || conversionMode !== 'none') ? 'flex' : 'none';
+            stretchOptions.style.display = currentMode.includes('stretch') ? 'flex' : 'none';
+            mainUploadControls.style.display = 'flex';
+            if(imageQueue.length > 0) actionWrapper.style.display = 'flex';
         }
     }
 
@@ -302,10 +510,13 @@
         activeTab = tab;
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.querySelector(`.tab-btn[onclick="switchTab('${tab}')"]`).classList.add('active');
+        
         document.getElementById('decals-section').classList.toggle('active', tab === 'decals');
         document.getElementById('shirts-section').classList.toggle('active', tab === 'shirts');
+        document.getElementById('models-section').classList.toggle('active', tab === 'models');
+        
         updateVisibility();
-        processQueue();
+        if(tab !== 'models') processQueue();
     }
 
     function activateBulk() {
@@ -313,7 +524,6 @@
         bulkToggle.style.display = 'none'; bulkDeactivate.style.display = 'inline-block';
         previewArea.style.display = 'none'; bulkGrid.style.display = 'grid';
         exportBtn.style.display = 'none'; bulkExportBtn.style.display = 'block';
-        processQueue();
     }
 
     function deactivateBulk() {
@@ -330,17 +540,14 @@
         currentMode = mode;
         document.querySelectorAll('.controls .btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        stretchOptions.style.display = mode.includes('stretch') ? 'flex' : 'none';
-        updateVisibility();
-        processQueue();
+        updateVisibility(); processQueue();
     }
 
     function toggleConversion(type) {
         conversionMode = (conversionMode === type) ? 'none' : type;
         document.getElementById('convBlack').classList.toggle('active', conversionMode === 'black');
         document.getElementById('convWhite').classList.toggle('active', conversionMode === 'white');
-        updateVisibility();
-        processQueue();
+        updateVisibility(); processQueue();
     }
 
     function setBait(baitType, btn) {
@@ -360,8 +567,7 @@
                 const img = new Image();
                 img.onload = () => {
                     imageQueue.push({img, name: file.name});
-                    loaded++;
-                    if(loaded === files.length) processQueue();
+                    loaded++; if(loaded === files.length) processQueue();
                 };
                 img.src = event.target.result;
             };
@@ -371,19 +577,15 @@
     });
 
     function processQueue() {
-        if(imageQueue.length === 0) return;
+        if(imageQueue.length === 0 || activeTab === 'models') return;
         actionWrapper.style.display = 'flex';
         if(isBulk) {
             bulkGrid.innerHTML = '';
             imageQueue.forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'bulk-item';
-                const tag = document.createElement('span');
-                tag.style.fontSize = '0.6rem'; tag.textContent = item.name;
-                const can = document.createElement('canvas');
-                div.appendChild(tag); div.appendChild(can);
-                bulkGrid.appendChild(div);
-                renderToCanvas(item.img, can);
+                const div = document.createElement('div'); div.className = 'bulk-item';
+                const tag = document.createElement('span'); tag.style.fontSize = '0.6rem'; tag.textContent = item.name;
+                const can = document.createElement('canvas'); div.appendChild(tag); div.appendChild(can);
+                bulkGrid.appendChild(div); renderToCanvas(item.img, can);
             });
         } else {
             previewArea.style.display = 'block';
@@ -397,22 +599,14 @@
         const tCtx = targetCanvas.getContext('2d', { willReadFrequently: true });
         if (activeTab === 'shirts') {
             targetCanvas.width = 585; targetCanvas.height = 559;
-            const temp = document.createElement('canvas');
-            temp.width = 128; temp.height = 128;
-            const tempCtx = temp.getContext('2d');
-            tempCtx.drawImage(img, 0, 0, 128, 128);
-            const idata = tempCtx.getImageData(0, 0, 128, 128);
-            const data = idata.data;
+            const temp = document.createElement('canvas'); temp.width = 128; temp.height = 128;
+            const tempCtx = temp.getContext('2d'); tempCtx.drawImage(img, 0, 0, 128, 128);
+            const idata = tempCtx.getImageData(0, 0, 128, 128); const data = idata.data;
             for (let i = 0; i < data.length; i += 4) {
                 const maxC = Math.max(data[i], data[i+1], data[i+2]) / 255;
-                if (maxC > 0) {
-                    data[i] /= maxC; data[i+1] /= maxC; data[i+2] /= maxC;
-                    data[i+3] = maxC * data[i+3];
-                }
+                if (maxC > 0) { data[i] /= maxC; data[i+1] /= maxC; data[i+2] /= maxC; data[i+3] = maxC * data[i+3]; }
             }
-            tempCtx.putImageData(idata, 0, 0);
-            tCtx.clearRect(0, 0, 585, 559);
-            tCtx.drawImage(temp, 230, 74, 128, 128);
+            tempCtx.putImageData(idata, 0, 0); tCtx.clearRect(0, 0, 585, 559); tCtx.drawImage(temp, 230, 74, 128, 128);
         } else {
             let w = 2000, h = 50;
             if(currentMode === 'stretchTall') { w = 200; h = 2100; }
@@ -420,45 +614,144 @@
             targetCanvas.width = w; targetCanvas.height = h;
             const method = (currentMode.includes('Only')) ? currentMode : conversionMode;
             tCtx.drawImage(img, 0, 0, w, h);
-            const idata = tCtx.getImageData(0, 0, w, h);
-            const data = idata.data;
+            const idata = tCtx.getImageData(0, 0, w, h); const data = idata.data;
             for (let i = 0; i < data.length; i += 4) {
                 let avg = (data[i] + data[i+1] + data[i+2]) / 3;
-                if (method.includes('black')) {
-                    data[i] = 255; data[i+1] = 255; data[i+2] = 255; data[i+3] = avg * 0.7;
-                } else if (method.includes('white')) {
-                    data[i] = 0; data[i+1] = 0; data[i+2] = 0; data[i+3] = (255 - avg) * 0.7;
-                } else { data[i+3] = 130; }
+                if (method.includes('black')) { data[i]=255; data[i+1]=255; data[i+2]=255; data[i+3]=avg*0.7; }
+                else if (method.includes('white')) { data[i]=0; data[i+1]=0; data[i+2]=0; data[i+3]=(255-avg)*0.7; }
+                else { data[i+3] = 130; }
             }
             tCtx.putImageData(idata, 0, 0);
             if (currentBait === 'duck' && (method.includes('black') || method.includes('white'))) {
-                tCtx.globalAlpha = 0.2;
-                tCtx.drawImage(duckImg, 0, 0, w, h);
-                tCtx.globalAlpha = 1.0;
+                tCtx.globalAlpha = 0.2; tCtx.drawImage(duckImg, 0, 0, w, h); tCtx.globalAlpha = 1.0;
             }
         }
     }
 
     exportBtn.addEventListener('click', () => {
-        const link = document.createElement('a');
-        link.download = activeTab === 'shirts' ? 'Shirt_Ghost.png' : 'Decal_Bypass.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
+        const link = document.createElement('a'); link.download = activeTab === 'shirts' ? 'Shirt_Ghost.png' : 'Decal_Bypass.png';
+        link.href = canvas.toDataURL('image/png'); link.click();
     });
 
     bulkExportBtn.addEventListener('click', async () => {
         const zip = new JSZip();
-        imageQueue.forEach((item, i) => {
-            const tempCanvas = document.createElement('canvas');
-            renderToCanvas(item.img, tempCanvas);
-            zip.file(`Bypassed_${item.name}`, tempCanvas.toDataURL('image/png').split(',')[1], {base64: true});
+        imageQueue.forEach((item) => {
+            const tc = document.createElement('canvas'); renderToCanvas(item.img, tc);
+            zip.file(`Bypassed_${item.name}`, tc.toDataURL('image/png').split(',')[1], {base64: true});
         });
         const content = await zip.generateAsync({type: "blob"});
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(content);
-        link.download = "Bypass_Archive.zip";
-        link.click();
+        const link = document.createElement('a'); link.href = URL.createObjectURL(content); link.download = "Bypass_Archive.zip"; link.click();
     });
+
+    // --- JOSEPHLB METHOD ---
+    const josephUpload = document.getElementById('joseph-upload');
+    const josephCanvas = document.getElementById('joseph-canvas');
+    const josephPreview = document.getElementById('joseph-preview-area');
+    const josephExport = document.getElementById('joseph-export');
+    const jCtx = josephCanvas.getContext('2d');
+
+    josephUpload.addEventListener('change', (e) => {
+        const file = e.target.files[0]; if(!file) return;
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+            const img = new Image();
+            img.onload = () => { josephPreview.style.display = 'block'; processJosephMethod(img); };
+            img.src = evt.target.result;
+        };
+        reader.readAsDataURL(file); e.target.value = '';
+    });
+
+    function processJosephMethod(img) {
+        josephCanvas.width = 300; josephCanvas.height = 300;
+        jCtx.globalAlpha = 1.0; jCtx.drawImage(duckImg, 0, 0, 300, 300);
+        const ghostCanvas = document.createElement('canvas'); ghostCanvas.width = 300; ghostCanvas.height = 300;
+        const gCtx = ghostCanvas.getContext('2d');
+
+        const createLayer = (type) => {
+            const lc = document.createElement('canvas'); lc.width = 300; lc.height = 300;
+            const lctx = lc.getContext('2d'); lctx.drawImage(img, 0, 0, 300, 300);
+            const id = lctx.getImageData(0,0,300,300); const d = id.data;
+            for(let i=0; i<d.length; i+=4) {
+                const g = (d[i]+d[i+1]+d[i+2])/3;
+                d[i]=255; d[i+1]=255; d[i+2]=255; d[i+3]=g;
+            }
+            lctx.putImageData(id, 0, 0); return lc;
+        };
+
+        const bot = createLayer(0); gCtx.globalAlpha = 190/255; gCtx.filter = 'blur(8px)'; gCtx.drawImage(bot, 0, 0);
+        gCtx.filter = 'none'; const mid = createLayer(1); gCtx.globalAlpha = 165/255; gCtx.drawImage(mid, 0, 0);
+        const top = createLayer(0); gCtx.globalAlpha = 190/255; gCtx.drawImage(top, 0, 0);
+        jCtx.globalAlpha = 130/255; jCtx.drawImage(ghostCanvas, 0, 0); jCtx.globalAlpha = 1.0;
+    }
+
+    josephExport.onclick = () => {
+        const a = document.createElement('a'); a.download = 'JosephLB_Bypass.png';
+        a.href = josephCanvas.toDataURL(); a.click();
+    };
+
+    // --- AUDIO LAB ENGINE ---
+    document.getElementById('audio-process-btn').onclick = async () => {
+        const mainFile = document.getElementById('main-audio-upload').files[0];
+        const tagFile = document.getElementById('tag-upload').files[0];
+        if (!mainFile) return alert("Upload main music!");
+
+        const btn = document.getElementById('audio-process-btn'); btn.innerText = "Stitching...";
+        const audioCtx = new AudioContext();
+        
+        const mainBuf = await audioCtx.decodeAudioData(await mainFile.arrayBuffer());
+        const tagBuf = tagFile ? await audioCtx.decodeAudioData(await tagFile.arrayBuffer()) : null;
+        
+        const tagDur = tagBuf ? tagBuf.duration : 0;
+        const offlineCtx = new OfflineAudioContext(2, audioCtx.sampleRate * (tagDur + mainBuf.duration), audioCtx.sampleRate);
+
+        if (tagBuf) {
+            const ts = offlineCtx.createBufferSource(); ts.buffer = tagBuf;
+            const tg = offlineCtx.createGain(); 
+            tg.gain.value = parseFloat(document.getElementById('tag-vol-slider').value) * parseFloat(document.getElementById('tag-gain-slider').value);
+            ts.connect(tg); tg.connect(offlineCtx.destination); ts.start(0);
+        }
+
+        const ms = offlineCtx.createBufferSource(); ms.buffer = mainBuf;
+        const mg = offlineCtx.createGain(); mg.gain.value = parseFloat(document.getElementById('main-gain-slider').value);
+        const dist = offlineCtx.createWaveShaper();
+        dist.curve = ((amt) => {
+            const n = 44100; const c = new Float32Array(n);
+            for (let i=0; i<n; ++i) { 
+                const x = (i*2)/n-1; c[i] = ((3+amt)*x*20*(Math.PI/180))/(Math.PI+amt*Math.abs(x)); 
+            }
+            return c;
+        })(parseInt(document.getElementById('main-dist-slider').value) * 5);
+
+        ms.connect(dist); dist.connect(mg); mg.connect(offlineCtx.destination);
+        ms.start(tagDur);
+
+        const rendered = await offlineCtx.startRendering();
+        const wav = audioBufferToWav(rendered);
+        const url = URL.createObjectURL(wav);
+        const a = document.createElement('a'); a.href = url; a.download = "Bypassed_Audio.wav"; a.click();
+        btn.innerText = "Stitch & Download WAV";
+    };
+
+    function audioBufferToWav(buffer) {
+        let n = buffer.numberOfChannels, len = buffer.length * n * 2 + 44,
+            arr = new ArrayBuffer(len), view = new DataView(arr), pos = 0;
+        const set16 = (d) => { view.setUint16(pos, d, true); pos += 2; };
+        const set32 = (d) => { view.setUint32(pos, d, true); pos += 4; };
+        set32(0x46464952); set32(len - 8); set32(0x45564157); set32(0x20746d66);
+        set32(16); set16(1); set16(n); set32(buffer.sampleRate);
+        set32(buffer.sampleRate * 2 * n); set16(n * 2); set16(16);
+        set32(0x61746164); set32(len - pos - 4);
+        let chs = []; for(let i=0; i<n; i++) chs.push(buffer.getChannelData(i));
+        let offset = 0;
+        while(pos < len) {
+            for(let i=0; i<n; i++) {
+                let s = Math.max(-1, Math.min(1, chs[i][offset]));
+                view.setInt16(pos, (s < 0 ? s * 0x8000 : s * 0x7FFF), true); pos += 2;
+            }
+            offset++;
+        }
+        return new Blob([arr], {type: "audio/wav"});
+    }
 </script>
 
 </body>
